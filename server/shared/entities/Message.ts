@@ -1,5 +1,5 @@
-import { ObjectType, Field, ID } from "type-graphql";
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn } from "typeorm";
+import { ObjectType, Field, ID } from "type-graphql";
 import { User } from "./User";
 import { Chat } from "./Chat";
 
@@ -7,8 +7,8 @@ import { Chat } from "./Chat";
 @Entity()
 export class Message {
   @Field(() => ID)
-  @PrimaryGeneratedColumn("uuid")
-  id!: string;
+  @PrimaryGeneratedColumn()
+  id!: number;
 
   @Field()
   @Column()

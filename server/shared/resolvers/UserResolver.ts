@@ -1,6 +1,6 @@
 import { Resolver, Query, Arg } from "type-graphql";
 import { User } from "@shared/entities/User";
-import { AppDataSource } from "../../../shared/data-source";
+import { AppDataSource } from "../data-source";
 
 @Resolver(() => User)
 export class UserResolver {

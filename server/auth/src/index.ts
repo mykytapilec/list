@@ -1,24 +1,29 @@
 import "reflect-metadata";
 import express from "express";
-import { ApolloServer } from "apollo-server-express";
+import cors from "cors";
+import bodyParser from "body-parser";
+import { ApolloServer } from "@apollo/server";
+import { expressMiddleware } from "@apollo/server/express4";
 import { buildSchema } from "type-graphql";
-import { AuthResolver } from "./resolvers/AuthResolver";
+import { UserResolver } from "@shared/resolvers/UserResolver";
 
-async function main() {
-  const app = express() as any;
+async function startAuth() {
+  const app = express();
+  app.use(cors());
+  app.use(bodyParser.json());
 
   const schema = await buildSchema({
-    resolvers: [AuthResolver],
-    validate: false
+    resolvers: [UserResolver],
   });
 
   const server = new ApolloServer({ schema });
   await server.start();
 
-  server.applyMiddleware({ app, path: "/graphql" });
+  app.use("/graphql", expressMiddleware(server));
 
-  const PORT = 4000;
-  app.listen(PORT, () => console.log(`Server ready at http://localhost:${PORT}/graphql`));
+  app.listen(4001, () => {
+    console.log("🚀 Auth service running at http://localhost:4001/graphql");
+  });
 }
 
-main().catch(console.error);
+startAuth();

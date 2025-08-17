@@ -1,6 +1,6 @@
 import { Resolver, Query, Mutation, Arg } from "type-graphql";
 import { Chat } from "@shared/entities/Chat";
-import { AppDataSource } from "../../../shared/data-source";
+import { AppDataSource } from "../data-source";
 import { User } from "@shared/entities/User";
 import { Message } from "@shared/entities/Message";
 

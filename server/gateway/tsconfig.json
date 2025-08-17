@@ -3,7 +3,7 @@
     "target": "ES2021",
     "module": "commonjs",
     "lib": ["ES2021"],
-    "rootDir": "../",          // поднимаем на уровень выше src
+    "rootDir": "src",
     "outDir": "dist",
     "strict": true,
     "esModuleInterop": true,
@@ -11,10 +11,8 @@
     "forceConsistentCasingInFileNames": true,
     "baseUrl": "./",
     "paths": {
-      "@shared/*": ["../shared/*"]   // алиас для импорта shared
-    },
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+      "@shared/*": ["../shared/*"]
+    }
   },
   "include": ["src", "../shared"]
 }

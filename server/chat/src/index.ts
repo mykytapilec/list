@@ -1,30 +1,30 @@
 import "reflect-metadata";
 import express from "express";
-import { ApolloServer } from "apollo-server-express";
+import cors from "cors";
+import bodyParser from "body-parser";
+import { ApolloServer } from "@apollo/server";
+import { expressMiddleware } from "@apollo/server/express4";
 import { buildSchema } from "type-graphql";
-import { AppDataSource } from "./data-source";
-import { ChatResolver } from "./resolvers/ChatResolver";
-import { MessageResolver } from "./resolvers/MessageResolver";
-import { UserResolver } from "./resolvers/UserResolver";
+import { ChatResolver } from "@shared/resolvers/ChatResolver";
+import { MessageResolver } from "@shared/resolvers/MessageResolver";
 
-
-async function main() {
-  await AppDataSource.initialize();
+async function startChat() {
+  const app = express();
+  app.use(cors());
+  app.use(bodyParser.json());
 
   const schema = await buildSchema({
-    resolvers: [ChatResolver, MessageResolver, UserResolver],
-    validate: false,
+    resolvers: [ChatResolver, MessageResolver],
   });
 
   const server = new ApolloServer({ schema });
   await server.start();
 
-  const app = express();
-  server.applyMiddleware({ app: app as any }); // решение конфликта типов
+  app.use("/graphql", expressMiddleware(server));
 
-  app.listen(4000, () => {
-    console.log(`Server ready at http://localhost:4000${server.graphqlPath}`);
+  app.listen(4002, () => {
+    console.log("🚀 Chat service running at http://localhost:4002/graphql");
   });
 }
 
-main().catch((err) => console.error(err));
+startChat();
