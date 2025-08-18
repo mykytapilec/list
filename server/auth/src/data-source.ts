@@ -5,7 +5,7 @@ import { User } from "@shared/entities/User";
 export const AppDataSource = new DataSource({
   type: "sqlite",
   database: "auth.sqlite",
-  synchronize: true, // автоматически создает таблицы
+  synchronize: true,
   logging: true,
   entities: [User],
   migrations: [],

@@ -7,7 +7,7 @@ import { Message } from "@shared/entities/Message";
 export const AppDataSource = new DataSource({
   type: "sqlite",
   database: "chat.sqlite",
-  synchronize: true, // автоматически создает таблицы
+  synchronize: true,
   logging: true,
   entities: [User, Chat, Message],
   migrations: [],

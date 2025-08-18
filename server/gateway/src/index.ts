@@ -1,4 +1,3 @@
-// server/gateway/src/index.ts
 import "reflect-metadata";
 import express from "express";
 import cors from "cors";
@@ -13,28 +12,23 @@ import { MessageResolver } from "@shared/resolvers/MessageResolver";
 import { buildSchema } from "type-graphql";
 
 async function startGateway() {
-  // Инициализация базы данных
   await AppDataSource.initialize();
   console.log("Data source initialized");
 
-  // Создание схемы GraphQL с резолверами
   const schema = await buildSchema({
     resolvers: [UserResolver, ChatResolver, MessageResolver],
     validate: false,
   });
 
-  // Создание ApolloServer
   const server = new ApolloServer({ schema });
 
   await server.start();
 
-  // Создание Express приложения
   const app = express();
 
   app.use(cors());
   app.use(express.json());
 
-  // Подключаем middleware ApolloServer
   app.use("/graphql", expressMiddleware(server));
 
   const PORT = 4000;
