@@ -2,17 +2,23 @@
   "compilerOptions": {
     "target": "ES2021",
     "module": "commonjs",
-    "lib": ["ES2021"],
-    "rootDir": "src",
-    "outDir": "dist",
+    "lib": ["es2021"],
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "baseUrl": "./",
+
+    "rootDir": "../",                       // общий корень (server)
+    "outDir": "./dist",
+
+    "baseUrl": "./src",
     "paths": {
-      "@shared/*": ["../shared/*"]
+      "@shared/*": ["../shared/*"]          // доступ к shared
     }
   },
-  "include": ["src", "../shared"]
+  "include": [
+    "src",
+    "../shared"                              // явно подключаем shared
+  ],
+  "exclude": ["node_modules", "dist"]
 }

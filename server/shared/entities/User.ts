@@ -1,5 +1,12 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, OneToMany } from "typeorm";
 import { ObjectType, Field, ID } from "type-graphql";
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToMany,
+  JoinTable,
+  OneToMany,
+} from "typeorm";
 import { Chat } from "./Chat";
 import { Message } from "./Message";
 
@@ -7,12 +14,15 @@ import { Message } from "./Message";
 @Entity()
 export class User {
   @Field(() => ID)
-  @PrimaryGeneratedColumn()
-  id!: number;
+  @PrimaryGeneratedColumn("uuid")
+  id!: string;
 
-  @Field()
-  @Column()
-  name!: string;
+  @Field(() => String)
+  @Column({ unique: true })
+  email!: string;
+
+  @Column() // 👈 не выводим в GraphQL
+  password!: string;
 
   @Field(() => [Chat])
   @ManyToMany(() => Chat, (chat) => chat.users)
@@ -20,6 +30,6 @@ export class User {
   chats!: Chat[];
 
   @Field(() => [Message])
-  @OneToMany(() => Message, (message) => message.sender)
+  @OneToMany(() => Message, (message) => message.user)
   messages!: Message[];
 }
