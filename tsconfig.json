@@ -1,0 +1,9 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./server/shared" },
+    { "path": "./server/auth" },
+    { "path": "./server/chat" },
+    { "path": "./server/gateway" }
+  ]
+}

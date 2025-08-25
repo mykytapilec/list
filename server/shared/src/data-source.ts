@@ -1,15 +1,13 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
-import { User } from "@shared/entities/User";
-import { Chat } from "@shared/entities/Chat";
-import { Message } from "@shared/entities/Message";
+import { User } from "./entities/User";
 
 export const AppDataSource = new DataSource({
   type: "sqlite",
-  database: "chat.sqlite",
+  database: "db.sqlite",
   synchronize: true,
   logging: true,
-  entities: [User, Chat, Message],
+  entities: [User],
   migrations: [],
   subscribers: [],
 });
