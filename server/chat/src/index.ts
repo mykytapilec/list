@@ -3,7 +3,6 @@ import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 import { ApolloServer } from "@apollo/server";
-import { expressMiddleware } from "@apollo/server/express4";
 import { buildSchema } from "type-graphql";
 import { ChatResolver } from "@shared/resolvers/ChatResolver";
 import { MessageResolver } from "@shared/resolvers/MessageResolver";
@@ -20,7 +19,13 @@ async function startChat() {
   const server = new ApolloServer({ schema });
   await server.start();
 
-  app.use("/graphql", expressMiddleware(server));
+  app.post("/graphql", async (req, res) => {
+    const result = await server.executeOperation({
+      query: req.body.query,
+      variables: req.body.variables,
+    });
+    res.json(result);
+  });
 
   app.listen(4002, () => {
     console.log("🚀 Chat service running at http://localhost:4002/graphql");

@@ -2,21 +2,14 @@
   "compilerOptions": {
     "target": "ES2020",
     "module": "commonjs",
-    "lib": ["ES2020"],
-    "rootDir": ".",
-    "baseUrl": ".",
-    "paths": {
-      "@shared/*": ["shared/src/*"]
-    },
-    "esModuleInterop": true,
-    "emitDecoratorMetadata": true,       // 👈 добавь
-    "experimentalDecorators": true,      // 👈 добавь
-    "strictPropertyInitialization": false, // 👈 важно для Entity классов
-    "forceConsistentCasingInFileNames": true,
     "strict": true,
+    "esModuleInterop": true,
     "skipLibCheck": true,
-    "outDir": "dist"
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": ".", 
+    "paths": {
+      "@shared/*": ["server/shared/src/*"]
+    }
   },
-  "include": ["auth/src", "shared/src"],
-  "exclude": ["node_modules", "dist"]
+  "include": ["server/*/src"]
 }

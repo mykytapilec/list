@@ -1,25 +1,24 @@
-import { Resolver, Query, Mutation, Arg } from "type-graphql";
-import { Chat } from "@shared/entities/Chat";
-import { AppDataSource } from "../data-source";
-import { User } from "@shared/entities/User";
-import { Message } from "@shared/entities/Message";
+import { Resolver, Query, Arg, Mutation } from "type-graphql";
+import { Chat } from "../entities/Chat";
+import { User } from "../entities/User";
+import { DataSource } from "typeorm";
 
-@Resolver(() => Chat)
+@Resolver(Chat)
 export class ChatResolver {
+  constructor(private dataSource: DataSource) {}
+
   @Query(() => [Chat])
   async chats(): Promise<Chat[]> {
-    return AppDataSource.getRepository(Chat).find({
-      relations: ["users", "messages"],
-    });
+    return this.dataSource.getRepository(Chat).find({ relations: ["users", "messages"] });
   }
 
   @Mutation(() => Chat)
-  async createChat(
-    @Arg("title") title: string,
-    @Arg("userIds", () => [String]) userIds: string[]
-  ): Promise<Chat> {
-    const users = await AppDataSource.getRepository(User).findByIds(userIds);
-    const chat = AppDataSource.getRepository(Chat).create({ title, users });
-    return AppDataSource.getRepository(Chat).save(chat);
+  async createChat(@Arg("name") name: string, @Arg("userIds", () => [Number]) userIds: number[]): Promise<Chat> {
+    const chatRepo = this.dataSource.getRepository(Chat);
+    const userRepo = this.dataSource.getRepository(User);
+
+    const users = await userRepo.findByIds(userIds);
+    const chat = chatRepo.create({ name, users });
+    return chatRepo.save(chat);
   }
 }

@@ -1,14 +1,11 @@
 {
   "name": "@list/shared",
   "version": "1.0.0",
-  "private": true,
-  "dependencies": {
-    "reflect-metadata": "^0.1.13",
-    "typeorm": "^0.3.17",
-    "type-graphql": "^2.0.0-rc.2",
-    "graphql": "^16.11.0"
-  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": { "build": "tsc -b" },
+  "dependencies": {},
   "devDependencies": {
-    "typescript": "^5.9.2"
+    "typescript": "^5.3.3"
   }
 }

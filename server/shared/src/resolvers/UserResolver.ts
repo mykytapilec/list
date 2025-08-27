@@ -9,7 +9,7 @@ export class UserResolver {
   @Query(() => User, { nullable: true })
   async user(@Arg("id") id: string): Promise<User | null> {
     return this.userRepo.findOne({
-      where: { id: id.toString() },
+      where: { id: Number(id) },
     });
   }
 

@@ -1,29 +1,24 @@
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
 import { ObjectType, Field, ID } from "type-graphql";
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  ManyToOne,
-} from "typeorm";
-import { User } from "./User";
 import { Chat } from "./Chat";
+import { User } from "./User";
 
 @ObjectType()
 @Entity()
 export class Message {
   @Field(() => ID)
-  @PrimaryGeneratedColumn("uuid")
-  id!: string;
+  @PrimaryGeneratedColumn()
+  id!: number;
 
-  @Field(() => String)
+  @Field()
   @Column()
   text!: string;
 
-  @Field(() => User)
-  @ManyToOne(() => User, (user) => user.messages)
-  user!: User;
-
   @Field(() => Chat)
-  @ManyToOne(() => Chat, (chat) => chat.messages)
+  @ManyToOne(() => Chat, chat => chat.messages)
   chat!: Chat;
+
+  @Field(() => User)
+  @ManyToOne(() => User)
+  author!: User;
 }

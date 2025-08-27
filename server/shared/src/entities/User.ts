@@ -1,12 +1,13 @@
-import { Field, ID, ObjectType } from "type-graphql";
-import { Entity, PrimaryColumn, Column } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable } from "typeorm";
+import { ObjectType, Field, ID } from "type-graphql";
+import { Chat } from "./Chat";
 
 @ObjectType()
 @Entity()
 export class User {
   @Field(() => ID)
-  @PrimaryColumn()
-  id!: string;
+  @PrimaryGeneratedColumn()
+  id!: number;
 
   @Field()
   @Column()
@@ -15,4 +16,9 @@ export class User {
   @Field()
   @Column()
   password!: string;
+
+  @Field(() => [Chat])
+  @ManyToMany(() => Chat, chat => chat.users)
+  @JoinTable()
+  chats!: Chat[];
 }

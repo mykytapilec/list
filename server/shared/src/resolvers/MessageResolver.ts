@@ -1,36 +1,34 @@
-import { Resolver, Query, Mutation, Arg } from "type-graphql";
-import { Message } from "@shared/entities/Message";
-import { AppDataSource } from "../data-source";
-import { Chat } from "@shared/entities/Chat";
-import { User } from "@shared/entities/User";
+import { Resolver, Query, Arg, Mutation } from "type-graphql";
+import { Message } from "../entities/Message";
+import { Chat } from "../entities/Chat";
+import { User } from "../entities/User";
+import { DataSource } from "typeorm";
 
-@Resolver(() => Message)
+@Resolver(Message)
 export class MessageResolver {
+  constructor(private dataSource: DataSource) {}
+
   @Query(() => [Message])
-  async messages(@Arg("chatId") chatId: string): Promise<Message[]> {
-    return AppDataSource.getRepository(Message).find({
-      where: { chat: { id: Number(chatId) } },
-      relations: ["chat", "sender"],
-    });
+  async messages(): Promise<Message[]> {
+    return this.dataSource.getRepository(Message).find({ relations: ["chat", "author"] });
   }
 
   @Mutation(() => Message)
-  async sendMessage(
-    @Arg("chatId") chatId: string,
-    @Arg("senderId") senderId: string,
-    @Arg("text") text: string
+  async createMessage(
+    @Arg("text") text: string,
+    @Arg("chatId") chatId: number,
+    @Arg("authorId") authorId: number
   ): Promise<Message> {
-    const chat = await AppDataSource.getRepository(Chat).findOneBy({ id: Number(chatId) });
-    const sender = await AppDataSource.getRepository(User).findOneBy({ id: Number(senderId) });
-    if (!chat || !sender) throw new Error("Chat or user not found");
+    const messageRepo = this.dataSource.getRepository(Message);
+    const chatRepo = this.dataSource.getRepository(Chat);
+    const userRepo = this.dataSource.getRepository(User);
 
-    const message = AppDataSource.getRepository(Message).create({
-      chat,
-      sender,
-      text,
-      createdAt: new Date(),
-    });
+    const chat = await chatRepo.findOneBy({ id: chatId });
+    const author = await userRepo.findOneBy({ id: authorId });
 
-    return AppDataSource.getRepository(Message).save(message);
+    if (!chat || !author) throw new Error("Chat or author not found");
+
+    const message = messageRepo.create({ text, chat, author });
+    return messageRepo.save(message);
   }
 }

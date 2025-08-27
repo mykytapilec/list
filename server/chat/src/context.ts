@@ -1,4 +1,3 @@
-// src/context.ts
 import { Request, Response } from "express";
 
 export interface MyContext {
