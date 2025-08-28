@@ -4,18 +4,15 @@
   "private": true,
   "workspaces": [
     "auth",
+    "chat",
+    "gateway",
     "shared"
   ],
-  "dependencies": {
-    "apollo-server": "^3.13.0",
-    "graphql": "^16.11.0",
-    "reflect-metadata": "^0.1.13",
-    "tsconfig-paths": "^4.2.0",
-    "type-graphql": "^2.0.0-rc.2",
-    "typeorm": "^0.3.17"
+  "scripts": {
+    "dev": "concurrently \"npm run dev --workspace=auth\" \"npm run dev --workspace=chat\" \"npm run dev --workspace=gateway\""
   },
   "devDependencies": {
-    "ts-node-dev": "^2.0.0",
-    "typescript": "^5.9.2"
+    "@types/body-parser": "^1.19.6",
+    "concurrently": "^8.0.0"
   }
 }

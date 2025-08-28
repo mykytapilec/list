@@ -1,8 +1,10 @@
+/// <reference path="./types/apollo-server-express4.d.ts" />
+
 import "reflect-metadata";
 import express from "express";
 import cors from "cors";
 import { ApolloServer } from "@apollo/server";
-import { expressMiddleware } from "@apollo/server/express";
+import { expressMiddleware } from "@apollo/server/express4";
 
 import { AppDataSource } from "@shared/data-source";
 import { UserResolver } from "@shared/resolvers/UserResolver";
@@ -21,11 +23,9 @@ async function startGateway() {
   });
 
   const server = new ApolloServer({ schema });
-
   await server.start();
 
   const app = express();
-
   app.use(cors());
   app.use(express.json());
 

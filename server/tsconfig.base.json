@@ -6,10 +6,9 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "baseUrl": ".", 
+    "baseUrl": ".",
     "paths": {
-      "@shared/*": ["server/shared/src/*"]
+      "@shared/*": ["shared/src/*"]
     }
-  },
-  "include": ["server/*/src"]
+  }
 }
