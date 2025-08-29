@@ -4,6 +4,6 @@ declare module "@apollo/server/express4" {
 
   export function expressMiddleware(
     server: ApolloServer,
-    options?: any
+    options?: { context?: any }
   ): RequestHandler;
 }

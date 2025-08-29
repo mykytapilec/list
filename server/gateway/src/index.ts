@@ -1,5 +1,3 @@
-/// <reference path="./types/apollo-server-express4.d.ts" />
-
 import "reflect-metadata";
 import express from "express";
 import cors from "cors";
