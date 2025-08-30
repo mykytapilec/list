@@ -10,5 +10,6 @@
     "paths": {
       "@shared/*": ["shared/src/*"]
     }
-  }
+  },
+  "typeRoots": ["./shared/src/types", "./node_modules/@types"]
 }

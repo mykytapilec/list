@@ -1,34 +1,32 @@
-import "reflect-metadata";
-import express from "express";
-import cors from "cors";
-import bodyParser from "body-parser";
-import { ApolloServer } from "@apollo/server";
-import { buildSchema } from "type-graphql";
-import { UserResolver } from "@shared/resolvers/UserResolver";
+import 'reflect-metadata';
+import express from 'express';
+import { ApolloServer } from '@apollo/server';
+import { expressMiddleware } from '@apollo/server/express4';
+import cors from 'cors';
+import bodyParser from 'body-parser';
+import { buildSchema } from 'type-graphql';
+import { AuthResolver } from '@shared/resolvers/AuthResolver';
 
-async function startAuth() {
-  const app = express();
-  app.use(cors());
-  app.use(bodyParser.json());
-
+async function start() {
   const schema = await buildSchema({
-    resolvers: [UserResolver],
+    resolvers: [AuthResolver],
+    validate: false,
   });
 
   const server = new ApolloServer({ schema });
   await server.start();
 
-  app.post("/graphql", async (req, res) => {
-    const result = await server.executeOperation({
-      query: req.body.query,
-      variables: req.body.variables,
-    });
-    res.json(result);
-  });
+  const app = express();
+  app.use(
+    '/graphql',
+    cors(),
+    bodyParser.json(),
+    expressMiddleware(server),
+  );
 
   app.listen(4001, () => {
-    console.log("🚀 Auth service running at http://localhost:4001/graphql");
+    console.log('✅ Auth service ready at http://localhost:4001/graphql');
   });
 }
 
-startAuth();
+start();

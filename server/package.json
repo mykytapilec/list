@@ -11,8 +11,14 @@
   "scripts": {
     "dev": "concurrently \"npm run dev --workspace=auth\" \"npm run dev --workspace=chat\" \"npm run dev --workspace=gateway\""
   },
+  "dependencies": {
+    "@apollo/server": "^4.12.2",
+    "express": "^4.19.2",
+    "graphql": "^16.11.0"
+  },
   "devDependencies": {
-    "@types/body-parser": "^1.19.6",
-    "concurrently": "^8.0.0"
+    "@types/express": "^4.17.21",
+    "concurrently": "^9.2.1",
+    "typescript": "^5.9.2"
   }
 }

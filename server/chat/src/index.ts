@@ -1,35 +1,32 @@
-import "reflect-metadata";
-import express from "express";
-import cors from "cors";
-import bodyParser from "body-parser";
-import { ApolloServer } from "@apollo/server";
-import { buildSchema } from "type-graphql";
-import { ChatResolver } from "@shared/resolvers/ChatResolver";
-import { MessageResolver } from "@shared/resolvers/MessageResolver";
+import 'reflect-metadata';
+import express from 'express';
+import { ApolloServer } from '@apollo/server';
+import cors from 'cors';
+import bodyParser from 'body-parser';
+import { buildSchema } from 'type-graphql';
+import { ChatResolver } from '@shared/resolvers/ChatResolver';
+import { expressMiddleware } from '@apollo/server/express4';
 
-async function startChat() {
-  const app = express();
-  app.use(cors());
-  app.use(bodyParser.json());
-
+async function start() {
   const schema = await buildSchema({
-    resolvers: [ChatResolver, MessageResolver],
+    resolvers: [ChatResolver],
+    validate: false,
   });
 
   const server = new ApolloServer({ schema });
   await server.start();
 
-  app.post("/graphql", async (req, res) => {
-    const result = await server.executeOperation({
-      query: req.body.query,
-      variables: req.body.variables,
-    });
-    res.json(result);
-  });
+  const app = express();
+  app.use(
+    '/graphql',
+    cors(),
+    bodyParser.json(),
+    expressMiddleware(server),
+  );
 
   app.listen(4002, () => {
-    console.log("🚀 Chat service running at http://localhost:4002/graphql");
+    console.log('✅ Chat service ready at http://localhost:4002/graphql');
   });
 }
 
-startChat();
+start();

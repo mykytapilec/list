@@ -6,15 +6,12 @@
     "build": "tsc -b"
   },
   "dependencies": {
-    "@apollo/server": "^5.0.0",
     "@list/shared": "file:../shared",
     "body-parser": "^2.2.0",
-    "cors": "^2.8.5",
-    "express": "^4.21.2"
+    "cors": "^2.8.5"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",
-    "@types/express": "^5.0.3",
     "ts-node-dev": "^2.0.0",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.3.3"
