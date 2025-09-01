@@ -1,15 +1,21 @@
-import type { Metadata } from "next";
 import "./globals.css";
+import { Providers } from "./providers";
 
-export const metadata: Metadata = {
+export const metadata = {
   title: "List App",
   description: "Chat application",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en">
-      <body className="bg-gray-100 text-gray-900">{children}</body>
+      <body>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }
